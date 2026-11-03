@@ -1,0 +1,787 @@
+/* The home page, https://veridian-aios.com/ (2026-10-02): the redesigned landing, promoted from the /new/ preview.
+   Scoped by `body.hm` and `hm-` class names, so no other page changes. Three colour themes switch by
+   html[data-theme] (set by public/theme.js before first paint, three dots at the top centre): the page's own
+   look is the default ("violet"), then "studio" (deep navy / studio blue) and "emerald" (deep green / teal).
+   A theme only re-points the colour tokens below and the shared tokens in site.css (--bg, --ink, --ink2, --line,
+   --violet, --pink, --dark, --dark-muted, --footer-bg, --footer-ink, --grad), so the brand line, the fact block and the footer follow it.
+   src/lib/home-themes.test.ts reads this file and pins WCAG AA contrast (4.5:1) for every text pair in all three. */
+
+/* 2026-10-29 redesign: a light, warm look like the games home. Cream page, deep navy text, teal for actions,
+   saffron for small accents. Three themes: teal (default), blue, saffron. --dk1/--dk2/--dk-text are the one dark card
+   (the free AI assistant) and stay the same in every theme. */
+:root {
+  --hero1: #fff7ea;
+  --hero2: #fff1dc;
+  --glow: rgba(14, 124, 110, 0.16);
+  --glow2: rgba(245, 130, 10, 0.2);
+  --soft: #e6f5f1;
+  --hero-text: #3b4b5b;
+  --dk1: #1c2b3a;
+  --dk2: #12404a;
+  --dk-text: #dbe7ee;
+}
+html[data-theme="blue"] {
+  --bg: #fbfdff;
+  --ink: #0f2447;
+  --ink2: #44557a;
+  --line: #d6e2fb;
+  --violet: #1d4ed8;
+  --pink: #1e3a8a;
+  --dark: #0f2447;
+  --dark-muted: #9db4e6;
+  --footer-bg: #1d4ed8;
+  --footer-ink: #eaf1ff;
+  --grad: linear-gradient(90deg, #1d4ed8, #1e3a8a);
+  --hero1: #eef4ff;
+  --hero2: #dbe7ff;
+  --glow: rgba(37, 99, 235, 0.16);
+  --soft: #e8f0ff;
+}
+html[data-theme="saffron"] {
+  --bg: #fffcf7;
+  --ink: #3a1f0a;
+  --ink2: #6b4a30;
+  --line: #f0dcc4;
+  --violet: #92400e;
+  --pink: #7c3410;
+  --dark: #3a1f0a;
+  --dark-muted: #e0b98e;
+  --footer-bg: #92400e;
+  --footer-ink: #fff3e6;
+  --grad: linear-gradient(90deg, #92400e, #7c3410);
+  --hero1: #fff4e0;
+  --hero2: #ffecc8;
+  --glow: rgba(180, 83, 9, 0.16);
+  --soft: #fff0dc;
+}
+
+/* ---- the three dots (top centre): built by public/theme.js, absolutely positioned so they move nothing ---- */
+.tdots {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  gap: 2px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.tdots button {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.tdots button::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background: var(--dot);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+}
+.tdots button[aria-pressed="true"]::before {
+  border-color: #fff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+.tdots button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 1px;
+  border-radius: 50%;
+}
+
+/* ---- layout ---- */
+body.hm {
+  background: var(--bg);
+}
+.hm-page {
+  position: relative;
+}
+.hm-wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-inline: 20px;
+}
+
+/* the home page's <main class="chooser"> is a plain block (the old centred-card rules in site.css do not apply to it) */
+.hm main.chooser {
+  display: block;
+  min-height: 0;
+  padding: 0;
+}
+.hm .hm-three,
+.hm .hm-flow,
+.hm .hm-nots {
+  text-align: left;
+}
+
+/* the nav sits on the hero, over its gradient */
+.hm .nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+  padding: 40px 20px 0;
+}
+.hm .nav .wordmark {
+  color: var(--ink);
+  font-size: 1.375rem;
+  letter-spacing: 0.08em;
+}
+.hm .nav .wordmark-sub {
+  margin-left: 0;
+  margin-top: 4px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: #92400e;
+}
+.hm .nav-signin,
+.hm .nav-partner {
+  color: var(--hero-text);
+}
+.hm .nav-signin:hover,
+.hm .nav-partner:hover {
+  color: var(--violet);
+}
+.hm .nav-ai {
+  background: var(--violet);
+  color: #fff;
+}
+@media (min-width: 1000px) {
+  .hm .nav {
+    padding-top: 18px;
+  }
+  .tdots {
+    top: 20px;
+  }
+}
+
+/* ---- hero ---- */
+.hm-hero {
+  position: relative;
+  overflow: hidden;
+  color: var(--ink);
+  padding: 120px 0 84px;
+  background:
+    radial-gradient(900px 520px at 85% -10%, var(--glow), transparent 60%),
+    radial-gradient(600px 420px at 0% 100%, var(--glow2), transparent 60%),
+    linear-gradient(180deg, var(--hero1), var(--hero2));
+}
+.hm-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(28, 43, 58, 0.07) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: linear-gradient(180deg, #000, transparent 85%);
+  pointer-events: none;
+}
+.hm-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 48px;
+  align-items: center;
+}
+.hm-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 12px Sora, sans-serif;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--violet);
+}
+.hm-eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 2px;
+  background: var(--a);
+}
+.hm h1.chooser-title {
+  margin: 18px 0 20px;
+  font-size: clamp(36px, 5.6vw, 62px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+.hm h1 em {
+  font-style: normal;
+  color: #92400e;
+}
+.hm-lead {
+  max-width: 34rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--hero-text);
+}
+.hm-doors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 30px;
+  max-width: 36rem;
+}
+.hm .choice {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 6px 18px rgba(28, 43, 58, 0.07);
+}
+.hm .choice:hover,
+.hm .choice:focus-visible {
+  background: var(--soft);
+  border-color: var(--violet);
+}
+.hm .choice span {
+  font: 600 12px Sora, sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #92400e;
+}
+.hm .choice strong {
+  font: 700 1rem/1.3 Sora, sans-serif;
+}
+.hm .choice i {
+  font-style: normal;
+  font-size: 0.875rem;
+  color: var(--hero-text);
+}
+.hm-under {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-top: 26px;
+  font-size: 0.875rem;
+  color: var(--hero-text);
+}
+.hm-under span::before {
+  content: "✓";
+  margin-right: 7px;
+  color: var(--violet);
+}
+.hm-signin {
+  margin-top: 18px;
+  font-size: 0.875rem;
+}
+.hm-signin a {
+  color: var(--violet);
+  text-decoration: underline;
+}
+
+/* the sample file (illustration, not a customer) */
+.hm-mock {
+  position: relative;
+}
+.hm-card {
+  border-radius: 20px;
+  background: #fff;
+  color: var(--ink);
+  padding: 20px;
+  box-shadow: 0 24px 50px rgba(28, 43, 58, 0.18);
+  border: 1px solid var(--line);
+}
+.hm-card-h {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9375rem;
+}
+.hm-card-h em {
+  font-style: normal;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--green-bg);
+  color: var(--green-ink);
+}
+.hm-meter {
+  height: 8px;
+  margin: 14px 0 6px;
+  border-radius: 99px;
+  background: var(--soft);
+  overflow: hidden;
+}
+.hm-meter i {
+  display: block;
+  width: 62%;
+  height: 100%;
+  background: var(--grad);
+}
+.hm-meter-t {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 0.75rem;
+  color: var(--ink2);
+}
+.hm-job {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  border-top: 1px solid var(--line);
+  font-size: 0.875rem;
+}
+.hm-job div {
+  flex: 1;
+  font-weight: 600;
+}
+.hm-job small {
+  display: block;
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: var(--ink2);
+}
+.hm-dot {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--green-bg);
+  color: var(--green-ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+.hm-dot.o {
+  background: #ffedd5;
+  color: #9a3412;
+}
+.hm-dot.p {
+  background: var(--soft);
+}
+.hm-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--soft);
+  color: var(--ink2);
+}
+.hm-seal {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 8px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--soft);
+  font-size: 0.8125rem;
+  color: var(--ink2);
+}
+.hm-seal b {
+  font: 700 1.5rem Sora, sans-serif;
+  color: var(--violet);
+}
+.hm-float {
+  position: absolute;
+  right: -10px;
+  bottom: -18px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: var(--a);
+  color: #1b1000;
+  font-size: 0.875rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* ---- the strip, the sections ---- */
+.hm-strip {
+  background: var(--soft);
+  border-block: 1px solid var(--line);
+}
+.hm-strip .hm-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 28px;
+  padding-block: 14px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink2);
+}
+.hm-sec {
+  padding: 72px 0;
+}
+.hm-kick {
+  display: block;
+  margin-bottom: 10px;
+  font: 700 12px Sora, sans-serif;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--violet);
+}
+.hm-sec h2 {
+  max-width: 40rem;
+  font-size: clamp(26px, 3.4vw, 40px);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.hm-sec h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.hm-three {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin: 34px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: three;
+}
+.hm-three li {
+  counter-increment: three;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--hm-r, 20px);
+  background: #fff;
+  font: 600 1.0625rem/1.45 Sora, "Instrument Sans", sans-serif;
+  color: var(--ink);
+}
+.hm-three li::before {
+  content: counter(three);
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-bottom: 14px;
+  border-radius: 50%;
+  background: var(--violet);
+  color: #fff;
+  font: 700 0.9375rem Sora, sans-serif;
+}
+.hm-flow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 34px;
+}
+.hm-flow div {
+  padding: 22px;
+  border-radius: 20px;
+  background: var(--soft);
+}
+.hm-flow p {
+  margin-top: 8px;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--ink2);
+}
+.hm-steps-bg {
+  background: #fff;
+  border-block: 1px solid var(--line);
+}
+
+/* the free AI assistant: the generated block beside a sample chat */
+.hm-ai {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 40px;
+  align-items: center;
+  padding: 36px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, var(--dk1), var(--dk2));
+  color: #fff;
+}
+.hm-ai .ai-highlight {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+}
+.hm-ai .ai-highlight-title {
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.12;
+  color: #fff;
+}
+.hm-ai .ai-highlight-tagline {
+  color: #ffd9a8;
+}
+.hm-ai .ai-highlight-line {
+  color: var(--dk-text);
+}
+.hm-ai .ai-highlight .btn {
+  background: #fff;
+  color: var(--violet);
+}
+.hm-ai .ai-highlight-more {
+  color: #fff;
+  text-decoration: underline;
+}
+.hm-chat {
+  display: grid;
+  gap: 10px;
+}
+.hm-chat div {
+  max-width: 88%;
+  padding: 11px 14px;
+  border-radius: 16px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.hm-chat .u {
+  justify-self: end;
+  background: #fff;
+  color: var(--ink);
+}
+.hm-chat .a {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+.hm-chat small {
+  display: block;
+  font-size: 0.75rem;
+  margin-top: 4px;
+  color: var(--dk-text);
+}
+.hm-chat .ok {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--violet);
+  font-weight: 700;
+}
+
+.hm-nots {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 30px;
+}
+.hm-nots div {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--ink2);
+}
+.hm-nots b {
+  display: block;
+  margin-bottom: 6px;
+  font: 700 1rem Sora, sans-serif;
+  color: var(--ink);
+}
+.hm .facts {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+.hm .footer {
+  padding-top: 40px;
+}
+
+/* ---- the tagline band: three first questions, the 10-year record, "not data-cleaning software" (owner, 2026-11-02) ---- */
+.hm-tl {
+  background: var(--soft);
+  border-block: 1px solid var(--line);
+}
+.hm-tl-lead {
+  max-width: 44rem;
+  font: 700 clamp(1.25rem, 2.4vw, 1.75rem) / 1.3 Sora, sans-serif;
+  color: var(--ink);
+}
+.hm-tl-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: tag;
+}
+.hm-tl-steps li {
+  counter-increment: tag;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  font: 600 1.0625rem / 1.35 Sora, "Instrument Sans", sans-serif;
+  color: var(--ink);
+}
+.hm-tl-steps li::before {
+  content: counter(tag);
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--violet);
+  color: #fff;
+  font: 700 0.9375rem Sora, sans-serif;
+}
+.hm-tl-line {
+  max-width: 44rem;
+  margin-top: 22px;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--ink2);
+}
+.hm-tl-note {
+  margin-top: 14px;
+  font: 700 1.25rem / 1.3 Sora, sans-serif;
+  color: var(--ink);
+}
+.hm-tl-fine {
+  margin-top: 10px;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--ink2);
+}
+.hm-tl-line + .hm-tl-line {
+  margin-top: 10px;
+}
+
+/* ---- All your questions: What, Why, Where, Whom, When, Which, How ---- */
+.hm-qa {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 30px;
+}
+.hm-qa div {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--ink2);
+}
+.hm-qa-w {
+  display: block;
+  margin-bottom: 6px;
+  font: 700 12px Sora, sans-serif;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--violet);
+}
+.hm-qa h3 {
+  margin-bottom: 8px;
+}
+
+/* ---- phones and narrow screens ---- */
+@media (max-width: 899px) {
+  .hm-grid,
+  .hm-ai {
+    grid-template-columns: 1fr;
+  }
+  .hm-three,
+  .hm-nots {
+    grid-template-columns: 1fr 1fr;
+  }
+  .hm-flow {
+    grid-template-columns: 1fr 1fr;
+  }
+  .hm-hero {
+    padding: 128px 0 64px;
+  }
+  .hm-float {
+    right: 8px;
+  }
+}
+@media (max-width: 560px) {
+  .hm-doors,
+  .hm-tl-steps,
+  .hm-three,
+  .hm-nots,
+  .hm-flow {
+    grid-template-columns: 1fr;
+  }
+  .hm-sec {
+    padding: 52px 0;
+  }
+  .hm-ai {
+    padding: 24px 20px;
+  }
+  .hm .nav-actions {
+    gap: 10px;
+  }
+}
+
+/* logo 2026-10-15 */
+.hm .nav .wordmark { padding-left: 50px; min-height: 40px; }
+.hm .nav .wordmark-logo { width: 40px; height: 40px; }
+
+/* ---- ready to start (same plain closing band as the games home) ---- */
+.hm-start {
+  text-align: center;
+}
+.hm-start p {
+  max-width: 560px;
+  margin: 8px auto 0;
+  color: var(--ink2);
+}
+.hm-start-talk b {
+  color: var(--ink);
+}
+
+/* ---- for CA, CS, legal and audit firms ---- */
+.hm-firms {
+  background: var(--soft);
+  border-block: 1px solid var(--line);
+}
+.hm-firms-lead {
+  max-width: 44rem;
+  margin-top: 12px;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--ink2);
+}
+.hm-firms-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 28px;
+}
+.hm-firms-grid div {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--a);
+  border-radius: 16px;
+  background: #fff;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--ink2);
+}
+.hm-firms-grid b {
+  display: block;
+  margin-bottom: 6px;
+  font: 700 1.0625rem Sora, sans-serif;
+  color: var(--ink);
+}
+@media (max-width: 899px) {
+  .hm-firms-grid {
+    grid-template-columns: 1fr;
+  }
+}
