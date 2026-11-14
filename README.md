@@ -43,3 +43,6 @@ The older Next.js DPDP side (`src/app/dpdp*`, `src/app/api/dpdp`, `src/lib/servi
 2. Run the workflows manually (`workflow_dispatch`), starting with live-smoke and site-health.
 3. Deploy from this repo ONCE to the same Pages project and Supabase functions and compare with the live site (pages, payment order creation, e-mail path, inbound mail).
 4. Only then disable the old repo's DPDP workflows and remove the moved paths there in one PR; enable the schedules here.
+
+
+See [KNOWLEDGE-MAP.md](KNOWLEDGE-MAP.md) for what this repository is for and what the other repositories are for (updated 14 Nov 2026).
