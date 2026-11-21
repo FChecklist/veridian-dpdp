@@ -1,0 +1,14 @@
+{
+  "product": "Veridian DPDP",
+  "version": "0.1.0",
+  "releasedAt": "2026-11-03T05:31:42Z",
+  "releasedAtIST": "2026-11-03T11:01:42+05:30",
+  "commit": "952188881a32fe53ede41759ec8d4c983d7c090a",
+  "changes": [
+    {
+      "version": "0.1.0",
+      "releasedAt": "2026-11-03T05:31:42Z",
+      "notes": "Baseline. This repository started on 3 Nov 2026 as a code-only copy of compliance-tracker commit 7ff2f835d78e. No behaviour has changed since the copy. The live deploy still comes from compliance-tracker until the owner approves the switch-over. A knowledge map was added on 14 Nov 2026 (docs only). Version tracking files were added after that (docs and metadata only)."
+    }
+  ]
+}
