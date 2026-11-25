@@ -1,10 +1,15 @@
 {
   "product": "Veridian DPDP",
-  "version": "0.1.0",
-  "releasedAt": "2026-11-03T05:31:42Z",
-  "releasedAtIST": "2026-11-03T11:01:42+05:30",
+  "version": "0.1.1",
+  "releasedAt": "2026-11-25T00:00:00Z",
+  "releasedAtIST": "2026-11-25T00:00:00+05:30",
   "commit": "952188881a32fe53ede41759ec8d4c983d7c090a",
   "changes": [
+    {
+      "version": "0.1.1",
+      "releasedAt": "2026-11-25T00:00:00Z",
+      "notes": "Added the small mark १३९ (Devanagari numerals one-three-nine) at the very top centre of every page (owner order, approved 25 Nov 2026): 6px, bold, dark blue, thin dark red line under it, no layout shift, not clickable, hidden from screen readers. Pages, page generators and the two AI-link Edge Function pages carry it; a guard test checks every page. The two-doors hidden-text check allows this one marked element. No payment or wording change. The commit field above is the baseline commit; it is to be set when this change is applied."
+    },
     {
       "version": "0.1.0",
       "releasedAt": "2026-11-03T05:31:42Z",

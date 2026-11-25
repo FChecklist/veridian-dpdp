@@ -89,7 +89,7 @@ describe("the committed sources", () => {
       const body = html.indexOf("<body")
       const line = html.indexOf('<div class="brand-line">')
       expect(line, `${p.source}: brand line is not the first thing in <body>`).toBeGreaterThan(body)
-      expect(html.slice(body, line)).not.toMatch(/<(?!body|!--|\/?div class="brand)[a-z]/)
+      expect(html.slice(body, line)).not.toMatch(/<(?!body|!--|\/?div class="brand|div class="mark139"|\/?span|\/div)[a-z]/)
       expect(findBrandLineDeviations(html, FACTS.brand), p.source).toEqual([])
     }
     // Not pinned: the line scrolls away.

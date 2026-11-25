@@ -50,6 +50,7 @@
 // file), which is what makes --check meaningful. Plain Node, one dependency
 // (yaml, via src/lib/facts.mjs).
 
+import { MARK139_HTML, MARK139_STYLE } from "./mark139.mjs"
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs"
 import { dirname, join, relative, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
@@ -397,8 +398,10 @@ function page(facts, { path, description, nodes, hidden = false, shareAsk, body 
     `<html lang="en-IN">`,
     `  <head>`,
     head(facts, { path, title: pageTitle(facts, path), description, nodes, hidden }),
+    indent(MARK139_STYLE, 4),
     `  </head>`,
     `  <body class="site">`,
+    indent(MARK139_HTML, 4),
     `    <!-- BEGIN generated: brand-line -->`,
     indent(brandLine(facts, { shareAsk }), 4),
     `    <!-- END generated: brand-line -->`,

@@ -12,7 +12,7 @@ Written by BOSS for every repository, so any session knows what is done and what
 
 ## Version (Veridian DPDP)
 
-- Current version: **0.1.0** (baseline, 3 Nov 2026).
+- Current version: **0.1.1** (25 Nov 2026: the small mark "१३९" at the top centre of every page; baseline was 0.1.0, 3 Nov 2026).
 - Where it lives: `dpdp-app/public/version.json` (served on the site as /version.json once deployed). The history is in `CHANGELOG.md` at the repo root.
 - How to bump: for every deployed change, raise MAJOR.MINOR.PATCH (PATCH for fixes, MINOR for new features, MAJOR for big breaking changes), then update `CHANGELOG.md`, `dpdp-app/public/version.json` and this section in the same pull request.
 
