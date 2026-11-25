@@ -47,4 +47,4 @@ The older Next.js DPDP side (`src/app/dpdp*`, `src/app/api/dpdp`, `src/lib/servi
 
 See [KNOWLEDGE-MAP.md](KNOWLEDGE-MAP.md) for what this repository is for and what the other repositories are for (updated 14 Nov 2026).
 
-Version history is in [CHANGELOG.md](CHANGELOG.md) (current version 0.1.0).
+Version history is in [CHANGELOG.md](CHANGELOG.md) (current version 0.1.1).

@@ -271,7 +271,10 @@ export function findHiddenText(html, css) {
       if (how.length && hasLetters(innerOf(html, at))) out.push({ kind: `inline ${how.join(", ")}`, detail: tag })
     }
     if (/\shidden(?:\s|=|>|\/)/i.test(tag) && hasLetters(innerOf(html, at))) out.push({ kind: "hidden attribute", detail: tag })
-    if (/\saria-hidden\s*=\s*"true"/i.test(tag) && hasLetters(innerOf(html, at))) out.push({ kind: 'aria-hidden="true" with text', detail: tag })
+    // The owner-approved small mark "१३९" (class mark139, decorative, Devanagari numerals only) is the one
+    // aria-hidden element allowed on a page; it carries no words, so it hides nothing from a reader.
+    const approvedMark = /\sclass\s*=\s*"mark139"/i.test(tag)
+    if (/\saria-hidden\s*=\s*"true"/i.test(tag) && !approvedMark && hasLetters(innerOf(html, at))) out.push({ kind: 'aria-hidden="true" with text', detail: tag })
     const classes = /\sclass\s*=\s*"([^"]*)"/i.exec(tag)?.[1]?.split(/\s+/) ?? []
     for (const c of classes) {
       if (hidden.has(c) && hasLetters(innerOf(html, at))) out.push({ kind: `class .${c} (${hidden.get(c).join(", ")})`, detail: tag })

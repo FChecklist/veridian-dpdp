@@ -20,6 +20,8 @@
 // regenerate, and the review line, JSON-LD reviewedBy and the removal of
 // noindex all change together in one diff -- see drafts/README.md.
 
+import { MARK139_HTML, MARK139_STYLE } from "../mark139.mjs"
+
 export const SITE = {
   base: "https://app.veridian-aios.com",
   name: "VERIDIAN",
@@ -164,8 +166,10 @@ ${JSON.stringify(ld, null, 2).split("\n").map((l) => "  " + l).join("\n")}
   <style>
 ${CSS}
   </style>
+${MARK139_STYLE}
 </head>
 <body>
+${MARK139_HTML}
 <header class="site"><div>${SITE.name}<small>VERy INDIAN</small></div></header>
 <main>
 ${REVIEW.reviewer ? "" : `<p class="draft">${inline(strings.draftNote)}</p>\n`}<p class="kicker">${inline(page.kicker)}</p>
